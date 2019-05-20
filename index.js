@@ -65,6 +65,7 @@ function jsonSelector(json) {
     Example: .container --pretty
     Example 2: StackView .container --pretty
     Example 3: VideoModeSelect#videoMode --pretty
+    Example 4: StackView.container #videoMode --pretty
 
     To clear the terminal just type cls and hit enter.
 
