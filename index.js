@@ -156,14 +156,6 @@ function startProgram() {
   };
 };
 
-let data = [
-  {
-    "class": "VideoModeSelect",
-    "identifier": "videoMode"
-  }
-]
-
-jsonRecursion.filterTree(data, 'VideoModeSelect', [])
 startProgram();
 
 module.exports = {
