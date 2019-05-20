@@ -48,11 +48,11 @@ function jsonSelector(json) {
 
     The program currently supports the following selectors. 
 
-    class: e.g "Input"
+    class: e.g Input
 
-    classNames: e.g ".container"
+    classNames: e.g .container
 
-    identifier: e.g "#videoMode"
+    identifier: e.g #videoMode
 
     Compound Selectors: e.g StackView.container or VideoModeSelect#videoMode
 
