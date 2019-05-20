@@ -1,4 +1,4 @@
-module.exports = function makeTree(json, selector, array) {
+function makeTree(json, selector, array) {
   let selectorType,selectorName;
 
   switch(selector[0]) {
@@ -15,7 +15,6 @@ module.exports = function makeTree(json, selector, array) {
       selectorName = selector;
       break;
   };
-
   Object.keys(json).map(key => {
     const item = json[key];
     if (Array.isArray(item[selectorType])) {
@@ -33,4 +32,13 @@ module.exports = function makeTree(json, selector, array) {
     typeof item === 'object' && makeTree(item, selector, array)
   });
   return array;
+};
+
+function filterTree(json, viewName) {
+  return json.filter(items => items['class'] === viewName);
+};
+
+module.exports = {
+  makeTree,
+  filterTree
 };

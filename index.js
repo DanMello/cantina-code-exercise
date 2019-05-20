@@ -2,8 +2,33 @@ const https = require('https');
 const urlModule = require('url');
 const prettyPrint = require('./prettyPrint');
 const readline = require('readline');
-const makeTree = require('./makeTree');
+const jsonRecursion = require('./jsonRecursion');
 const json = require('./SystemViewController.json');
+
+function printPrettyTree(data, cmd, viewName) {
+  let jsonData;
+  let command = viewName ? cmd : cmd.replace('--pretty', '').trim();
+  const treeData = jsonRecursion.makeTree(data, command, []);
+  if (viewName) {
+    jsonData = jsonRecursion.filterTree(treeData, viewName);
+  } else {
+    jsonData = treeData;
+  };
+  console.log(JSON.stringify(jsonData, null, 2));
+  console.log('Found ' + jsonData.length + ((jsonData.length > 1 || jsonData.length === 0) ? ' views ' : ' view ') + 'with the selector ' + command);
+};
+
+function printNormal(data, cmd, viewName) {
+  let jsonData;
+  const treeData = jsonRecursion.makeTree(data, cmd, []);
+  if (viewName) {
+    jsonData = jsonRecursion.filterTree(treeData, viewName);
+  } else {
+    jsonData = treeData;
+  };
+  console.log(jsonData);
+  console.log('Found ' + jsonData.length + ((jsonData.length > 1 || jsonData.length === 0) ? ' views ' : ' view ') + 'with the selector ' + cmd);
+};
 
 function jsonSelector(json) {
   console.log(prettyPrint(`JSON parsed successfully.
@@ -39,15 +64,34 @@ function jsonSelector(json) {
       return;
     };
     const prettyJSON = cmd.split(' ').find(command => command === '--pretty');
-    if (prettyJSON) {
-      const command = cmd.replace('--pretty', '').trim();
-      const treeData = makeTree(json, command, []);
-      console.log(JSON.stringify(treeData, null, 2));
-      console.log('Found ' + treeData.length + ' views');
+    const commands = cmd.replace('--pretty', '').trim().split(' ');
+    const compoundSelector = RegExp(/(\w+[#.])\w+/g);
+
+    if (commands.length > 1) {
+      commands.forEach(command => {
+        if (prettyJSON) {
+          printPrettyTree(json, command);
+        } else {
+          printNormal(json, command);
+        };
+      });
+    } else if (compoundSelector.test(cmd)) {
+      const command = cmd.replace('--pretty', '').trim()
+      const selectorArray = command.split(/[#.]/);
+      const selectorType = (command.indexOf('#') !== -1) ? '#' : '.';
+      const viewName = selectorArray[0];
+      const selectorName = selectorType + selectorArray[1];
+      if (prettyJSON) {
+        printPrettyTree(json, selectorName, viewName);
+      } else {
+        printNormal(json, selectorName, viewName);
+      };
     } else {
-      const treeData = makeTree(json, cmd, []);
-      console.log(treeData);
-      console.log('Found ' + treeData.length + ' views');
+      if (prettyJSON) {
+        printPrettyTree(json, cmd);
+      } else {
+        printNormal(json, cmd);
+      };
     };
   });
 };
@@ -106,6 +150,14 @@ function startProgram() {
   };
 };
 
+let data = [
+  {
+    "class": "VideoModeSelect",
+    "identifier": "videoMode"
+  }
+]
+
+jsonRecursion.filterTree(data, 'VideoModeSelect', [])
 startProgram();
 
 module.exports = {

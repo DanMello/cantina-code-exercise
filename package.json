@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --watchAll",
-    "watchMakeTree": "nodemon makeTree.js"
+    "watchMakeTree": "nodemon makeTree.js",
+    "start": "nodemon index.js"
   },
   "author": "Dan Mello",
   "license": "ISC",
