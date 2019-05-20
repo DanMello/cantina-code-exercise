@@ -16,7 +16,7 @@ it('Should find 1 identifier with the name "videoMode"', () => {
   expect(data.length).toBe(1);
 });
 
-it('Should find 1 view with the class "videoModeSelect" and identifier "videoMode"', () => {
+it('Should find 1 view with the class "VideoModeSelect" and identifier "videoMode"', () => {
   const data = jsonRecursion.makeTree(json, '#videoMode', []);
   const fitlereddata = jsonRecursion.filterTree(data, 'VideoModeSelect');
   expect(fitlereddata.length).toBe(1);

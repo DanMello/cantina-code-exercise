@@ -30,6 +30,19 @@ function printNormal(data, cmd, viewName) {
   console.log('Found ' + jsonData.length + ((jsonData.length > 1 || jsonData.length === 0) ? ' views ' : ' view ') + 'with the selector ' + (viewName ? viewName : '') + cmd);
 };
 
+function compoundSelectorMethod(cmd, prettyJSON) {
+  const command = cmd.replace('--pretty', '').trim()
+  const selectorArray = command.split(/[#.]/);
+  const selectorType = (command.indexOf('#') !== -1) ? '#' : '.';
+  const viewName = selectorArray[0];
+  const selectorName = selectorType + selectorArray[1];
+  if (prettyJSON) {
+    printPrettyTree(json, selectorName, viewName);
+  } else {
+    printNormal(json, selectorName, viewName);
+  };
+};
+
 function jsonSelector(json) {
   console.log(prettyPrint(`JSON parsed successfully.
 
@@ -43,7 +56,9 @@ function jsonSelector(json) {
 
     Compound Selectors: e.g StackView.container or VideoModeSelect#videoMode
 
-    Selector Chains: e.g StackView .container 
+    Selector Chains: e.g StackView .container
+
+    Combining Compound Selectors and Selector chains: e.g StackView.container #videoMode
 
     If you want to see the views printed out neatly you can pass the flag --pretty
 
@@ -75,23 +90,16 @@ function jsonSelector(json) {
 
     if (commands.length > 1) {
       commands.forEach(command => {
-        if (prettyJSON) {
+        if (compoundSelector.test(command)) {
+          compoundSelectorMethod(command, prettyJSON);
+        } else if (prettyJSON) {
           printPrettyTree(json, command);
         } else {
           printNormal(json, command);
         };
       });
     } else if (compoundSelector.test(cmd)) {
-      const command = cmd.replace('--pretty', '').trim()
-      const selectorArray = command.split(/[#.]/);
-      const selectorType = (command.indexOf('#') !== -1) ? '#' : '.';
-      const viewName = selectorArray[0];
-      const selectorName = selectorType + selectorArray[1];
-      if (prettyJSON) {
-        printPrettyTree(json, selectorName, viewName);
-      } else {
-        printNormal(json, selectorName, viewName);
-      };
+      compoundSelectorMethod(cmd, prettyJSON);
     } else {
       if (prettyJSON) {
         printPrettyTree(json, cmd);
