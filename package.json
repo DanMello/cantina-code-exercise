@@ -1,0 +1,16 @@
+{
+  "name": "cantina-code-exercise",
+  "version": "1.0.0",
+  "description": "command line program with node js",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --watchAll",
+    "watchMakeTree": "nodemon makeTree.js"
+  },
+  "author": "Dan Mello",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^24.8.0",
+    "nodemon": "^1.19.0"
+  }
+}
