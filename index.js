@@ -15,7 +15,7 @@ function printPrettyTree(data, cmd, viewName) {
     jsonData = treeData;
   };
   console.log(JSON.stringify(jsonData, null, 2));
-  console.log('Found ' + jsonData.length + ((jsonData.length > 1 || jsonData.length === 0) ? ' views ' : ' view ') + 'with the selector ' + command);
+  console.log('Found ' + jsonData.length + ((jsonData.length > 1 || jsonData.length === 0) ? ' views ' : ' view ') + 'with the selector ' + (viewName ? viewName : '') + command);
 };
 
 function printNormal(data, cmd, viewName) {
@@ -27,7 +27,7 @@ function printNormal(data, cmd, viewName) {
     jsonData = treeData;
   };
   console.log(jsonData);
-  console.log('Found ' + jsonData.length + ((jsonData.length > 1 || jsonData.length === 0) ? ' views ' : ' view ') + 'with the selector ' + cmd);
+  console.log('Found ' + jsonData.length + ((jsonData.length > 1 || jsonData.length === 0) ? ' views ' : ' view ') + 'with the selector ' + (viewName ? viewName : '') + cmd);
 };
 
 function jsonSelector(json) {
@@ -41,9 +41,15 @@ function jsonSelector(json) {
 
     identifier: e.g "#videoMode"
 
+    Compound Selectors: e.g StackView.container or VideoModeSelect#videoMode
+
+    Selector Chains: e.g StackView .container 
+
     If you want to see the views printed out neatly you can pass the flag --pretty
 
     Example: .container --pretty
+    Example 2: StackView .container --pretty
+    Example 3: VideoModeSelect#videoMode --pretty
 
     To clear the terminal just type cls and hit enter.
 
